@@ -20,9 +20,7 @@ Future<void> escutarCliente(Socket client)  async {
   if (mensagens.isNotEmpty ) {            
       client.writeAll(mensagens, ',');
       
-    }  
-
-    
+    }      
 
   client.listen((dados) async { 
 
