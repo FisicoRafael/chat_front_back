@@ -22,7 +22,9 @@ class _ChatConversaState extends State<ChatConversa> {
   Mensagem mensagem = Mensagem();
 
   void enviarMensagem(Socket socket, String mensagemEnviada) {
-    socket.write(mensagemEnviada);
+    setState(() {
+      socket.write(mensagemEnviada);
+    });
   }
 
   Future<void> chamarSocket() async {
@@ -36,12 +38,12 @@ class _ChatConversaState extends State<ChatConversa> {
         print(serverResponse);
 
         if (mensagens.isEmpty) {
-          for (String item in serverResponse.split(';')) {
+          for (String item in serverResponse.split('%%')) {
             print(item);
-            mensagens.add(jsonDecode(item));
+            mensagens.add(Mensagem.fromMap(jsonDecode(item)));
           }
         } else {
-          mensagens.add(jsonDecode(serverResponse));
+          mensagens.add(Mensagem.fromMap(jsonDecode(serverResponse)));
         }
 
         // mensagens.add(novaMensagem);
@@ -101,10 +103,9 @@ class _ChatConversaState extends State<ChatConversa> {
                     mensagem.mensagem = controller.text;
                     mensagem.data = DateTime.now().toString();
                     String jsonMensagem = jsonEncode(mensagem.toMap());
-                    setState(() {
-                      enviarMensagem(socketAux, jsonMensagem);
-                      _reset();
-                    });
+
+                    enviarMensagem(socketAux, jsonMensagem);
+                    _reset();
                   },
                   icon: Icon(Icons.send))
             ],

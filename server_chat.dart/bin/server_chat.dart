@@ -26,7 +26,7 @@ Future<void> escutarCliente(Socket client)  async {
     for (var item in mensagens) {
       novoItem.add(jsonEncode(item.toMap()));          
           }   
-      client.writeAll(novoItem,';');         
+      client.writeAll(novoItem,'%%');         
     }      
 
   client.listen((dados) async { 
